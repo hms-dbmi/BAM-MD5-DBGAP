@@ -38,7 +38,8 @@ def create_ecs_ec2(stack_name, cluster_name, vpc, ec2, userdata_string, ecs_sett
                                         SecurityGroupIds=[ec2_security_groups.id],
                                         KeyName=ecs_settings['EC2_KEY_NAME'],
                                         UserData=userdata_string,
-                                        IamInstanceProfile={"Arn": ecs_settings['EC2_IAM_INSTANCE_PROFILE_ARN']})
+                                        IamInstanceProfile={"Arn": ecs_settings['EC2_IAM_INSTANCE_PROFILE_ARN']},
+                                        Placement={'AvailabilityZone': ecs_settings['AVAILABILITY_ZONE']})
 
     new_instance[0].create_tags(Tags=machine_tags)
     new_instance[0].wait_until_running()

@@ -5,6 +5,7 @@ import copy
 import subprocess
 import errno
 import sys
+import time
 
 
 def silentremove(filename):
@@ -50,11 +51,12 @@ with open(SAMPLE_ID_FILE, "r") as id_file_handle:
 
 # --------------------------
 
-# Temporary File Name
+# Temporary File Name.
 tempDownloadedFile = "/scratch/md5"
 
-print(file_sample_map)
-print(file_keys)
+# Set up output file.
+timestr = time.strftime("%Y%m%d-%H%M%S")
+md5_out_file = open("/scratch/md5_out" + timestr, "w+")
 
 # --------------------------
 # LOOP THROUGH FILES TO PROCESS
@@ -102,6 +104,8 @@ for file_key in file_keys:
     # --------------------------
     # OUTPUT RESULTS
     # --------------------------
+    md5_out_file.write("{0},{1},{2}\n".format(fileservice_uuid, file_key, md5))
+
     print("----------\n")
     print("FileService UUID : %s\n" % fileservice_uuid)
     print("File Name : %s\n" % file_key)
@@ -119,3 +123,5 @@ for file_key in file_keys:
             fp.truncate()
             for x in file_keys_copy:
                 fp.write("{0},{1}\n".format(x[0], x[1]))
+
+md5_out_file.close()
