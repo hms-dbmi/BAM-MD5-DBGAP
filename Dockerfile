@@ -17,10 +17,9 @@ RUN mkdir /.aws/
 COPY config /.aws/config
 
 RUN mkdir /output/
+
 COPY generate_md5.py /output/generate_md5.py
 
-COPY s3_fileservice /output/s3_fileservice
-COPY sample_fileservice /output/sample_fileservice
 COPY rehead_bam.sh /output/rehead_bam.sh
 RUN chmod 700 /output/rehead_bam.sh
 

@@ -1,3 +1,5 @@
+import time
+
 def create_ecs_cluster(ecs_client, cluster_name):
     ecs_client.create_cluster(clusterName=cluster_name)
 
@@ -40,7 +42,7 @@ def create_ecs_ec2(stack_name, cluster_name, vpc, ec2, userdata_string, ecs_sett
                                         UserData=userdata_string,
                                         IamInstanceProfile={"Arn": ecs_settings['EC2_IAM_INSTANCE_PROFILE_ARN']},
                                         Placement={'AvailabilityZone': ecs_settings['AVAILABILITY_ZONE']})
-
+    time.sleep(10)
     new_instance[0].create_tags(Tags=machine_tags)
     new_instance[0].wait_until_running()
 
