@@ -56,6 +56,7 @@ while True:
         if message.message_attributes is not None:
 
             UDN_ID = message.message_attributes.get('UDN_ID').get('StringValue')
+            sequence_core_alias = message.message_attributes.get('sequence_core_alias').get('StringValue')
 
             FileBucket = message.message_attributes.get('FileBucket').get('StringValue')
             FileKey = message.message_attributes.get('FileKey').get('StringValue')
@@ -76,7 +77,8 @@ while True:
             print("Processing BAM with samtools. UDN_ID - " + UDN_ID + " Sample_ID - " + Sample_ID, flush=True)
 
             try:
-                subprocess.call(["/output/rehead_bam.sh", UDN_ID, Sample_ID])
+                subprocess.call(["/output/rehead_bam.sh", sequence_core_alias, Sample_ID])
+                subprocess.call(["/output/rehead_bam.sh"], UDN_ID, '')
                 print("Done processing file. Begin MD5.", flush=True)
             except:
                 print("Error processing BAM - ", sys.exc_info()[:2], flush=True)

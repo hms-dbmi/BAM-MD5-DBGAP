@@ -1,0 +1,4 @@
+*.pyc
+.idea
+deploy/settings
+update_repo.sh
