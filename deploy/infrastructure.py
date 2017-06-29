@@ -2,11 +2,11 @@ import argparse
 
 import boto3
 
-from deploy.ecs_volumes import attach_volume_to_ecs_ec2
-from deploy.ecs import create_ecs_cluster, create_ecs_task, create_ecs_ec2
-from deploy.iam_roles import create_iam_roles
-from deploy.security_group import create_security_groups
-from deploy.utilities import read_settings_file
+from ecs_volumes import attach_volume_to_ecs_ec2
+from ecs import create_ecs_cluster, create_ecs_task, create_ecs_ec2
+from iam_roles import create_iam_roles
+from security_group import create_security_groups
+from utilities import read_settings_file
 
 # Be sure to export correct profile using something like this... export AWS_PROFILE=68
 ASSUME_ROLE_POLICY_DOCUMENT = '{"Version": "2012-10-17","Statement": [{"Sid": "","Effect": "Allow","Principal": {"Service": "ec2.amazonaws.com"},"Action": "sts:AssumeRole"}]}'
@@ -104,6 +104,7 @@ if settings["MOUNT_VOLUME_TO_EC2"] == "True":
         print("Mount Volume to EC2 - " + ecs_cluster_name + instance_counter)
 
         ssm_client = boto3.client('ssm')
+        print(ecs_ec2_instance1['Reservations'][0]['Instances'][0]['InstanceId'])
         ssm_client.send_command(InstanceIds=[ecs_ec2_instance1['Reservations'][0]['Instances'][0]['InstanceId']],
                                 DocumentName="AWS-RunShellScript",
                                 Parameters={'commands': ["sudo mkfs -t ext4 /dev/xvdg",
